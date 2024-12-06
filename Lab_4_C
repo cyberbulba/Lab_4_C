@@ -3,9 +3,9 @@
 #define Ind_max_num 36
 #include <stdio.h>
 
-int is_latin_symb(char symb)
+int is_right_symb(char symb)
 {
-	if ((symb >= 'a' && symb <= 'z') || (symb >= 'A' && symb <= 'Z'))
+	if ((symb >= 'a' && symb <= 'z') || (symb >= 'A' && symb <= 'Z') || (symb >= '0' && symb <= '9') || symb == '_')
 	{
 		return 1;
 	}
@@ -24,13 +24,18 @@ int input_str_matrix(char s[][Ind_len], int* n_inds)
 	}
 	while (1)
 	{
-		if (!is_latin_symb(ch))
+		if (!is_right_symb(ch))
 		{
 			printf("ERROR: symbol is not english letter or wrong end symbol.");
 			return 1;
 		}
-		while (is_latin_symb(ch)) //заполнение ненулевыми символами
+		while (is_right_symb(ch)) //заполнение ненулевыми символами
 		{
+			if (s[i][0] >= '0' && s[i][0] <= '9')
+			{
+				printf("ERROR: identificator cant start with digit.");
+				return 1;
+			}
 			s[i][j] = ch;
 			j++;
 			if (j >= Ind_len)
@@ -88,7 +93,7 @@ void print_inds(char s[][Ind_len], int n_inds)
 		ind_flag = 1;
 		for (int j = 0;s[i][j] != '\0';j++)
 		{
-			if (s[i][j] >= 'a' && s[i][j] <= 'z')
+			if ((s[i][j] >= 'a' && s[i][j] <= 'z') || (s[i][j] >= '0' && s[i][j] <= '9') || s[i][j] == '_')
 			{
 				ind_flag = 0;
 			}
