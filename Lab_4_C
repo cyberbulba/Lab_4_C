@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define Ind_len 13
-#define Ind_max_num 36
+#define Ind_max_num 5
 #include <stdio.h>
 
 int is_right_symb(char symb)
@@ -65,7 +65,7 @@ int input_str_matrix(char s[][Ind_len], int* n_inds)
 		{
 			s[i][j] = '\0';
 			(*n_inds)++;
-			if (*n_inds >= Ind_max_num)
+			if (*n_inds > Ind_max_num)
 			{
 				printf("ERROR: number of identificators > max number of identificators.");
 				return 1;
