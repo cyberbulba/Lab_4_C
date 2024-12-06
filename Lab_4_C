@@ -24,7 +24,7 @@ int input_str_matrix(char s[][Ind_len], int* n_inds)
 	}
 	while (1)
 	{
-		if (!is_right_symb(ch))
+		if (!is_right_symb(ch) && ch != ' ')
 		{
 			printf("ERROR: symbol is not english letter or wrong end symbol.");
 			return 1;
@@ -45,7 +45,7 @@ int input_str_matrix(char s[][Ind_len], int* n_inds)
 			}
 			scanf("%c", &ch);
 		}
-		if (ch == ' ' && j!=0) //переход к новому элементу матрицы
+		if (ch == ' ' && j != 0) //переход к новому элементу матрицы
 		{
 			s[i][j] = '\0';
 			i++;
@@ -123,9 +123,8 @@ void main()
 	{
 		return;
 	}
-	
+
 	printf("Right identificators:\n");
-	
 	print_inds(string, n_inds);
 
 	return;
