@@ -1,0 +1,127 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define Ind_len 13
+#define Ind_max_num 36
+#include <stdio.h>
+
+int is_latin_symb(char symb)
+{
+	if ((symb >= 'a' && symb <= 'z') || (symb >= 'A' && symb <= 'Z'))
+	{
+		return 1;
+	}
+	return 0;
+}
+
+int input_str_matrix(char s[][Ind_len], int* n_inds)
+{
+	char ch;
+	int i = 0, j = 0;
+	scanf("%c", &ch);
+	if (ch == '.')
+	{
+		printf("String is empty.");
+		return 1;
+	}
+	while (1)
+	{
+		if (!is_latin_symb(ch))
+		{
+			printf("ERROR: symbol is not english letter or wrong end symbol.");
+			return 1;
+		}
+		while (is_latin_symb(ch)) //заполнение ненулевыми символами
+		{
+			s[i][j] = ch;
+			j++;
+			if (j >= Ind_len)
+			{
+				printf("ERROR: symbols in identificator > max symbols in identificator.");
+				return 1;
+			}
+			scanf("%c", &ch);
+		}
+		if (ch == ' ' && j!=0) //переход к новому элементу матрицы
+		{
+			s[i][j] = '\0';
+			i++;
+			(*n_inds)++;
+			if (*n_inds >= Ind_max_num)
+			{
+				printf("ERROR: number of identificators > max number of identificators.");
+				return 1;
+			}
+			j = 0;
+		}
+		while (ch == ' ')
+		{
+			scanf("%c", &ch);
+		}
+		if (ch == '.')
+		{
+			s[i][j] = '\0';
+			(*n_inds)++;
+			if (*n_inds >= Ind_max_num)
+			{
+				printf("ERROR: number of identificators > max number of identificators.");
+				return 1;
+			}
+			break;
+		}
+	}
+	return 0;
+}
+
+void print_col(char s[][Ind_len], int col)
+{
+	for (int j = 0;s[col][j] != '\0';j++)
+	{
+		printf("%c", s[col][j]);
+	}
+	return;
+}
+
+void print_inds(char s[][Ind_len], int n_inds)
+{
+	int ind_flag, is_any_inds_flag = 0;
+	for (int i = 0;i < n_inds;i++)
+	{
+		ind_flag = 1;
+		for (int j = 0;s[i][j] != '\0';j++)
+		{
+			if (s[i][j] >= 'a' && s[i][j] <= 'z')
+			{
+				ind_flag = 0;
+			}
+		}
+		if (ind_flag)
+		{
+			print_col(s, i);
+			is_any_inds_flag = 1;
+			printf(" ");
+		}
+	}
+	if (!is_any_inds_flag)
+	{
+		printf("No right identeficators.");
+	}
+	return;
+}
+
+void main()
+{
+	char string[Ind_max_num][Ind_len];
+	int n_inds = 0;
+
+	printf("Input identeficators before '.' (english letters):\n");
+
+	if (input_str_matrix(string, &n_inds))
+	{
+		return;
+	}
+	
+	printf("Right identificators:\n");
+	
+	print_inds(string, n_inds);
+
+	return;
+}
