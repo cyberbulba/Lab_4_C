@@ -1,8 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define Ind_len 13
-#define Ind_max_num 5
+#define Ind_max_num 36
 #include <stdio.h>
 
+//проверка на символ, который может быть в идентификаторе
 int is_right_symb(char symb)
 {
 	if ((symb >= 'a' && symb <= 'z') || (symb >= 'A' && symb <= 'Z') || (symb >= '0' && symb <= '9') || symb == '_')
@@ -12,24 +13,28 @@ int is_right_symb(char symb)
 	return 0;
 }
 
+//функция для ввода строки и представления её в виде матрицы
 int input_str_matrix(char s[][Ind_len], int* n_inds)
 {
 	char ch;
 	int i = 0, j = 0;
 	scanf("%c", &ch);
+	
 	if (ch == '.')
 	{
 		printf("String is empty.");
 		return 1;
 	}
+	
 	while (1)
 	{
 		if (!is_right_symb(ch) && ch != ' ')
 		{
-			printf("ERROR: symbol is not english letter or wrong end symbol.");
+			printf("ERROR: symbol is not correct or wrong end symbol.");
 			return 1;
 		}
-		while (is_right_symb(ch)) //заполнение ненулевыми символами
+		
+		while (is_right_symb(ch)) //заполнение ненулевыми символами строки
 		{
 			if (s[i][0] >= '0' && s[i][0] <= '9')
 			{
@@ -45,7 +50,8 @@ int input_str_matrix(char s[][Ind_len], int* n_inds)
 			}
 			scanf("%c", &ch);
 		}
-		if (ch == ' ' && j != 0) //переход к новому элементу матрицы
+		
+		if (ch == ' ' && j != 0) //переход к новой строке
 		{
 			s[i][j] = '\0';
 			i++;
@@ -57,10 +63,12 @@ int input_str_matrix(char s[][Ind_len], int* n_inds)
 			}
 			j = 0;
 		}
+		
 		while (ch == ' ')
 		{
 			scanf("%c", &ch);
 		}
+		
 		if (ch == '.')
 		{
 			s[i][j] = '\0';
@@ -76,15 +84,17 @@ int input_str_matrix(char s[][Ind_len], int* n_inds)
 	return 0;
 }
 
-void print_col(char s[][Ind_len], int col)
+//функция для вывода идентификатора (строки матрицы)
+void print_row(char s[][Ind_len], int row)
 {
-	for (int j = 0;s[col][j] != '\0';j++)
+	for (int j = 0;s[row][j] != '\0';j++)
 	{
-		printf("%c", s[col][j]);
+		printf("%c", s[row][j]);
 	}
 	return;
 }
 
+//функция для вывода идентификаторов, состоящих из заглавных букв
 void print_inds(char s[][Ind_len], int n_inds)
 {
 	int ind_flag, is_any_inds_flag = 0;
@@ -100,7 +110,7 @@ void print_inds(char s[][Ind_len], int n_inds)
 		}
 		if (ind_flag)
 		{
-			print_col(s, i);
+			print_row(s, i);
 			is_any_inds_flag = 1;
 			printf(" ");
 		}
@@ -117,14 +127,17 @@ void main()
 	char string[Ind_max_num][Ind_len];
 	int n_inds = 0;
 
-	printf("Input identeficators before '.' (english letters):\n");
-
+	//ввод строки
+	printf("Input identeficators before '.':\n");
+	
 	if (input_str_matrix(string, &n_inds))
 	{
 		return;
 	}
 
 	printf("Right identificators:\n");
+	
+	//вывод идентификаторов, состоящих из заглавных букв
 	print_inds(string, n_inds);
 
 	return;
